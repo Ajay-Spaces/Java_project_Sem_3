@@ -10,7 +10,12 @@ public class MainSQLite {
     // SINGLE CLEAN CONNECTION METHOD (SQLite)
     // -------------------------------------------
     public static Connection getConnection() throws Exception {
-        Class.forName("org.sqlite.JDBC");
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            // Fallback if driver not found
+            System.out.println("\t\t\t⚠ SQLite driver not found, attempting connection anyway...");
+        }
         return DriverManager.getConnection(DB_URL);
     }
 
