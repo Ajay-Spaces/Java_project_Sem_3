@@ -1,23 +1,55 @@
 # CRUD Operation in Java with JDBC
 
-A complete JDBC-based CRUD application for managing employee data with MySQL database.
+A complete JDBC-based CRUD application for managing employee data. Choose your preferred database!
 
 ## ✅ Fixed JDBC Issues
 
 - **SQL Injection Prevention**: Uses `PreparedStatement` with parameterized queries
 - **Resource Management**: Implements try-with-resources and proper connection cleanup
-- **Automatic Classpath**: Includes MySQL JDBC driver in `lib/` folder
+- **Multiple Database Options**: MySQL, SQLite, or Mock Database
 
-## Prerequisites
+---
 
-- Java 21 or higher
-- MySQL Server running on `localhost:3306`
-- Database: `employeedb`
-- Table: `employees` (id, name, department, location)
+## 🚀 Quick Start (Recommended: SQLite - No Setup Required!)
 
-## Database Setup
+```bash
+cd /workspaces/Java_project_Sem_3/crud
+./run-sqlite.sh
+```
 
-Create the database and table:
+SQLite version creates a local `employees.db` file automatically. **No external database needed!**
+
+---
+
+## Running the Application
+
+### Option 1: SQLite (✅ RECOMMENDED - No setup required)
+```bash
+./run-sqlite.sh
+```
+**Pros:** Works immediately, no MySQL needed, database file stored locally
+**Cons:** Single-user only
+
+### Option 2: Mock Database (In-memory, no persistence)
+```bash
+java -cp src MainWithMockDB
+```
+**Pros:** Fast, no files, good for testing logic
+**Cons:** Data lost on exit
+
+### Option 3: MySQL (Production-grade)
+First, ensure MySQL is running:
+```bash
+./run.sh
+```
+**Pros:** Full enterprise database, multi-user support
+**Cons:** Requires MySQL server setup
+
+---
+
+## Database Setup (MySQL Only)
+
+If using MySQL, create the database:
 
 ```sql
 CREATE DATABASE employeedb;
@@ -32,25 +64,25 @@ CREATE TABLE employees (
 );
 ```
 
-## Compilation
+---
 
-```bash
-cd crud
-javac -cp lib/mysql-connector-java-8.0.11.jar -d . src/Main.java
+## Files
+
+```
+crud/
+├── src/
+│   ├── Main.java                    # MySQL version
+│   ├── MainSQLite.java              # SQLite version ✅ RECOMMENDED
+│   └── MainWithMockDB.java          # In-memory mock version
+├── lib/
+│   ├── mysql-connector-java-8.0.11.jar
+│   └── sqlite-jdbc-3.44.0.0.jar
+├── run.sh                           # MySQL runner
+├── run-sqlite.sh                    # SQLite runner ✅ RECOMMENDED
+└── run-mock.sh                      # Mock database runner
 ```
 
-## Execution
-
-**Option 1: Using run script**
-```bash
-./run.sh
-```
-
-**Option 2: Direct Java command**
-```bash
-cd crud
-java -cp .:lib/mysql-connector-java-8.0.11.jar Main
-```
+---
 
 ## Features
 
@@ -60,26 +92,57 @@ java -cp .:lib/mysql-connector-java-8.0.11.jar Main
 4. **Delete Data** - Remove employee records
 5. **Exit** - Close the application
 
+---
+
 ## Security Features
 
-- ✅ PreparedStatement prevents SQL injection attacks
-- ✅ Try-with-resources ensures proper resource cleanup
-- ✅ Exception handling for database errors
+- ✅ **PreparedStatement** prevents SQL injection attacks
+- ✅ **Try-with-resources** ensures proper resource cleanup
+- ✅ **Exception handling** for database errors
+- ✅ **Parameterized queries** throughout the application
 
-## File Structure
+---
 
+## Compilation (Manual)
+
+```bash
+cd crud
+
+# SQLite version (recommended)
+javac -cp lib/sqlite-jdbc-3.44.0.0.jar src/MainSQLite.java
+
+# MySQL version
+javac -cp lib/mysql-connector-java-8.0.11.jar src/Main.java
+
+# Mock version
+javac src/MainWithMockDB.java
 ```
-crud/
-├── src/
-│   └── Main.java          # Main CRUD application
-├── lib/
-│   └── mysql-connector-java-8.0.11.jar   # MySQL JDBC Driver
-├── crud.iml               # IntelliJ project file
-└── run.sh                 # Convenient run script
+
+---
+
+## Execution (Manual)
+
+```bash
+cd crud
+
+# SQLite (recommended)
+java -cp .:src:lib/sqlite-jdbc-3.44.0.0.jar MainSQLite
+
+# MySQL
+java -cp .:lib/mysql-connector-java-8.0.11.jar Main
+
+# Mock
+java -cp src MainWithMockDB
 ```
 
-## Notes
+---
 
-- Credentials: User `root` with no password (modify in `getConnection()` method if needed)
-- The application uses proper JDBC best practices
-- All resource leaks have been fixed
+## Summary
+
+| Option | Setup Required | Data Persistence | Use Case |
+|--------|----------------|------------------|----------|
+| **SQLite** ✅ | None | Yes (.db file) | Development, Testing, Demo |
+| **MySQL** | Database + Server | Yes | Production, Multi-user |
+| **Mock** | None | No | Logic testing only |
+
+**Start with SQLite for a hassle-free experience!**
